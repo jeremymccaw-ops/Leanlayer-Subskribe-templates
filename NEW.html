@@ -1,0 +1,336 @@
+<head>
+<style>
+@import url('https://cdn-customer-assets.subskribe.com/sandbox/af501392-f579-4a2c-a874-661615b0aa52/css/switzer.css');
+body,
+table {
+  font-weight: 250;
+  font-size: 10pt;
+  font-family: 'Switzer-Light';
+  break-inside: avoid;
+}
+.draft-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  z-index: 10000;
+  font-size: 200px;
+  color: rgba(224, 224, 224, 0.6);
+  pointer-events: none;
+  user-select: none;
+  width: 100%;
+  text-align: center;
+}
+th, tr, td {
+  margin-top: 8px;
+  padding-top: 8px;
+  page-break-inside: avoid;
+}
+.table-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  margin-bottom: 10px;
+  page-break-inside: avoid;
+  page-break-after: avoid;
+}
+.section-header {
+  font-family: 'Switzer-Extrabold';
+}
+strong,
+b {
+  font-family: 'Switzer-Medium';
+}
+.alpha-table-head-text,
+.contact-table-head,
+.line-items-table-head,
+.medium-font {
+  font-family: 'Switzer-Medium';
+}
+.signature-section {
+  margin-top: 24px;
+  page-break-inside: avoid;
+}
+.signature-table {
+  width: 100%;
+  table-layout: fixed;
+}
+.signature-table th {
+  text-align: left;
+  vertical-align: bottom;
+}
+</style>
+</head>
+
+{{#isDraft}} {{^renderingOptions.isDocOutput}}
+<div class="draft-watermark">Draft</div>
+{{/renderingOptions.isDocOutput}} {{/isDraft}}
+<table border="0" width="100%">
+  <tr>
+    <td width="30%">
+      {{#base64EncodedLogo}}
+      <img src="{{base64EncodedLogo}}" alt="logo" class="logo" width="100" height="100" />
+      {{/base64EncodedLogo}}
+    </td>
+    <td width="40%">
+      <strong class="medium-font">{{tenantName}}</strong>
+      <div>
+        <div>{{tenantPhoneNumber}}</div>
+        <div>{{orderOwner}}</div>
+      </div>
+    </td>
+    <td width="30%">
+      <div>Order ID: {{ orderId }}</div>
+      <div>Order Date: {{ orderStartDate }}</div>
+      {{#expiryDate}}
+      <div>Expiration Date: {{expiryDate}}</div>
+      {{/expiryDate}}
+      {{#purchaseOrderNumber}}
+      <div>Purchase Order: #{{purchaseOrderNumber}}</div>
+      {{/purchaseOrderNumber}}
+      {{#order.CustomFields.BillToCC}}
+      <div>Bill To CC: {{order.CustomFields.BillToCC}}</div>
+      {{/order.CustomFields.BillToCC}}
+      {{#autoRenew}}
+      <div>Auto Renew: &#10003;</div>
+      {{/autoRenew}}
+    </td>
+  </tr>
+</table>
+
+<div>
+  <h3 class="section-header">Customer Information</h3>
+  <table class="contact-table">
+    <thead class="contact-table-head">
+      <tr>
+        <th>{{#reseller.name}}Reseller{{/reseller.name}}{{^reseller.name}}Bill to{{/reseller.name}}</th>
+        <th>{{#reseller.name}}Customer{{/reseller.name}}{{^reseller.name}}Ship to{{/reseller.name}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="contact-item">{{#reseller.name}}{{reseller.name}}{{/reseller.name}}{{^reseller.name}}{{account.name}}{{/reseller.name}}<br />
+          {{billingContact.firstName}} {{billingContact.lastName}}<br />
+          {{billingAddress.streetAddressLine1}}<br />
+          {{#billingAddress.streetAddressLine2}}{{billingAddress.streetAddressLine2}}<br />{{/billingAddress.streetAddressLine2}}
+          {{#billingAddress.city}}{{billingAddress.city}},{{/billingAddress.city}} {{billingAddress.state}} {{billingAddress.zipcode}}<br />
+          {{billingAddress.countryName}}<br />
+          {{billingContact.email}}<br />
+          {{billingContactPhoneNumber}}</td>
+        <td class="contact-item">{{account.name}}<br />
+          {{shippingContact.firstName}} {{shippingContact.lastName}}<br />
+          {{shippingAddress.streetAddressLine1}}<br />
+          {{#shippingAddress.streetAddressLine2}}{{shippingAddress.streetAddressLine2}}<br />{{/shippingAddress.streetAddressLine2}}
+          {{#shippingAddress.city}}{{shippingAddress.city}},{{/shippingAddress.city}} {{shippingAddress.state}} {{shippingAddress.zipcode}}<br />
+          {{shippingAddress.countryName}}<br />
+          {{shippingContact.email}}<br />
+          {{shippingContactPhoneNumber}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <h3 class="section-header">Contract Terms</h3>
+  <table class="line-items-table">
+    <thead class="line-items-table-head">
+      <tr>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Billing Cycle</th>
+        <th>Currency</th>
+        <th>Subscription Term</th>
+        <th>Payment Term</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{orderStartDate}}</td>
+        <td>{{orderEndDate}}</td>
+        <td>{{billingCycle}}</td>
+        <td>{{currency}}</td>
+        <td>{{termLength}}</td>
+        <td>{{paymentTerm}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+
+<div>
+  <h3 class="section-header">Contract Items</h3>
+  {{#formattedDateToLineItems}}
+  {{#formattedDateToLineItems.entrySet}}
+  <h4 class="line-items-table-caption-date-interval">{{key.formattedStartDate}} - {{key.formattedEndDate}}</h4>
+  <table class="alpha-table">
+    <thead>
+      <tr class="alpha-tr">
+        <td class="alpha-td alpha-table-head" style="text-align: left;">
+          <p><span class="alpha-table-text alpha-table-head-text">Plan Name</span></p>
+        </td>
+        <td class="alpha-td alpha-table-head">
+          <p><span class="alpha-table-text alpha-table-head-text">Quantity</span></p>
+        </td>
+        <td class="alpha-td alpha-table-head">
+          <p><span class="alpha-table-text alpha-table-head-text">Annual Total</span></p>
+        </td>
+        <td class="alpha-td alpha-table-head">
+          <p><span class="alpha-table-text alpha-table-head-text">Total</span></p>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#value}}
+      <tr class="alpha-tr">
+        <td class="alpha-td" style="text-align: left;">
+          <p><span class="alpha-table-text alpha-table-body-text">{{planDisplayName}}</span></p>
+          {{#planDescription}}
+          <p><span class="alpha-table-text alpha-table-body-text">{{planDescription}}</span></p>
+          {{/planDescription}}
+        </td>
+        <td class="alpha-td">
+          <p><span class="alpha-table-text alpha-table-body-text">{{quantity}}</span></p>
+        </td>
+        <td class="alpha-td">
+          <p><span class="alpha-table-text alpha-table-body-text">{{yearlyAmount}}</span></p>
+        </td>
+        <td class="alpha-td">
+          <p><span class="alpha-table-text alpha-table-body-text">{{amount}}</span></p>
+        </td>
+      </tr>
+      {{/value}}
+    </tbody>
+  </table>
+  {{/formattedDateToLineItems.entrySet}}
+  <br />
+  {{#invoicePreviews}}
+  <div class="total">
+    <label class="total-label medium-font">{{#isYearlyBilling}}Year {{ periodIndex }}{{/isYearlyBilling}}{{^isYearlyBilling}}{{ start }} - {{ end }}{{/isYearlyBilling}}</label>
+    <span class="table-number">{{ amount }}</span>
+  </div>
+  {{/invoicePreviews}}
+  <div class="total">
+    <label class="total-label medium-font">Grand Total</label>
+    <span class="table-number">{{total}}</span>
+  </div>
+  {{/formattedDateToLineItems}}
+</div>
+
+<div class="table-section">
+  <p>This Order Form is subject to and governed by the Trimble Offering Terms v4.0 available at <a href="https://www.trimble.com/en/legal/offering-terms/terms/english">Customer Terms</a> (&quot;Customer Terms&quot;).</p>
+</div>
+
+<div>
+  {{#formattedCustomContent}}
+  {{#customContentTitle}}
+  <div>
+    <h3 class="section-header">{{ customContentTitle }}</h3>
+  </div>
+  {{/customContentTitle}}
+  <div class="table-section">{{{ formattedCustomContent }}}</div>
+  {{/formattedCustomContent}}
+</div>
+
+<div class="table-section">
+  {{#formattedDocumentTemplatesWithoutSection}}{{{formattedDocumentTemplatesWithoutSection}}}{{/formattedDocumentTemplatesWithoutSection}}
+</div>
+
+{{#paymentLink}}
+<div class="table-section">
+  <h3 class="section-header">Automatic Payments</h3>
+  <p>
+    To make automatic payments, add a payment instrument as your primary payment method.<br />
+    <a href="{{paymentLink}}">Submit Payment Details</a>
+  </p>
+</div>
+{{/paymentLink}}
+
+<div class="table-section">
+  {{#formattedBeforeSignatureSection}}{{{formattedBeforeSignatureSection}}}{{/formattedBeforeSignatureSection}}
+</div>
+
+{{#order.customFields.CustomerParties}}
+<p><b>Customer Parties:</b> {{order.customFields.CustomerParties}}</p>
+{{/order.customFields.CustomerParties}}
+
+<div class="signature-section">
+  <table class="signature-table">
+    <colgroup>
+      <col width="12%" />
+      <col width="33%" />
+      <col width="10%" />
+      <col width="12%" />
+      <col width="33%" />
+    </colgroup>
+    <tr>
+      <th colspan="2" class="section-header">{{ account.name }}</th>
+      <th></th>
+      <th colspan="2" class="section-header">{{ tenantName }}</th>
+    </tr>
+    <tr>
+      <th><div>Signature:</div></th>
+      <th>
+        <div class="provider-gap-block provider-gap-block--signature">
+          <div class="signature-anchor-text">
+            <div>_{{{customerEsignDocumentTags.signature}}}_</div>
+          </div>
+        </div>
+      </th>
+      <th></th>
+      <th><div>Signature:</div></th>
+      <th>
+        <div class="provider-gap-block provider-gap-block--signature">
+          <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.signature}}}_</div>
+        </div>
+      </th>
+    </tr>
+    <tr>
+      <th><div>Name:</div></th>
+      <th>
+        <div class="provider-gap-block">
+          <div class="signature-anchor-text">_{{{customerEsignDocumentTags.name}}}_</div>
+        </div>
+      </th>
+      <th></th>
+      <th><div>Name:</div></th>
+      <th>
+        <div class="provider-gap-block">
+          <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.name}}}_</div>
+        </div>
+      </th>
+    </tr>
+    <tr>
+      <th><div>Date:</div></th>
+      <th>
+        <div class="provider-gap-block">
+          <div class="signature-anchor-text">_{{{customerEsignDocumentTags.date}}}_</div>
+        </div>
+      </th>
+      <th></th>
+      <th><div>Date:</div></th>
+      <th>
+        <div class="provider-gap-block">
+          <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.date}}}_</div>
+        </div>
+      </th>
+    </tr>
+    <tr>
+      <th><div>Title:</div></th>
+      <th>
+        <div class="provider-gap-block">
+          <div class="signature-anchor-text">_{{{customerEsignDocumentTags.title}}}_</div>
+        </div>
+      </th>
+      <th></th>
+      <th><div>Title:</div></th>
+      <th>
+        <div class="provider-gap-block">
+          <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.title}}}_</div>
+        </div>
+      </th>
+    </tr>
+  </table>
+</div>
+
+<div class="table-section">
+  {{#formattedAfterSignatureSection}}{{{formattedAfterSignatureSection}}}{{/formattedAfterSignatureSection}}
+</div>

@@ -1,0 +1,301 @@
+    <table border="0" width="100%">
+      <tr>
+        <td>
+          {{#base64EncodedLogo}}
+          <img src="{{base64EncodedLogo}}" alt="logo" class="logo" width="100" height="50" />
+          {{/base64EncodedLogo}}
+        </td>
+        <td>
+          <strong> {{tenantName}} </strong>
+          <div>
+            <div>{{tenantPhoneNumber}}</div>
+            <div>{{tenantEmail}}</div>
+          </div>
+        </td>
+        <td>
+          {{#isDraft}}
+          <h1 class="draft-watermark">DRAFT</h1>
+          {{/isDraft}}
+          <div>Order ID: {{ orderId }}</div>
+          {{#purchaseOrderNumber}}
+          <div><label>Purchase Order</label> #{{purchaseOrderNumber}}</div>
+          {{/purchaseOrderNumber}} {{#autoRenew}}
+          <div><label>Auto Renew</label> &#10003;</div>
+          {{/autoRenew}}
+        </td>
+      </tr>
+    </table>
+
+
+    <div>
+    <h3 class="section-header">Customer Information</h3>
+    <div>
+
+    <table class="contact-table">
+      <thead class="contact-table-head">
+        <tr>
+          <th class="">{{#reseller.name}} Reseller {{/reseller.name}} {{^reseller.name}} Bill to {{/reseller.name}}</th>
+<th class="">{{#reseller.name}} Customer {{/reseller.name}} {{^reseller.name}} Ship to {{/reseller.name}}</th>
+        </tr>
+      </thead>
+      <tbody class="">
+        <tr>
+          <td class="contact-item">{{#reseller.name}} {{reseller.name}} {{/reseller.name}} {{^reseller.name}} {{account.name}}
+      {{/reseller.name}}<br />
+      {{billingContact.firstName}} {{billingContact.lastName}}<br />
+      {{billingAddress.streetAddressLine1}}<br />
+      {{#billingAddress.streetAddressLine2}} {{billingAddress.streetAddressLine2}}<br />
+      {{/billingAddress.streetAddressLine2}} {{billingAddress.city}}, {{billingAddress.state}}
+      {{billingAddress.zipcode}}<br />
+      {{billingAddress.countryName}}<br />
+      {{billingContact.email}}<br />
+      {{billingContactPhoneNumber}}<br /></td>
+<td class="contact-item">{{account.name}}<br />
+      {{shippingContact.firstName}} {{shippingContact.lastName}}<br />
+      {{shippingAddress.streetAddressLine1}}<br />
+      {{#shippingAddress.streetAddressLine2}} {{shippingAddress.streetAddressLine2}}<br />
+      {{/shippingAddress.streetAddressLine2}} {{shippingAddress.city}}, {{shippingAddress.state}}
+      {{shippingAddress.zipcode}}<br />
+      {{shippingAddress.countryName}}<br />
+      {{shippingContact.email}}<br />
+      {{shippingContactPhoneNumber}}<br /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    </div>
+  </div>
+
+    <br />
+
+    <div>
+    <h3 class="section-header">Contract Terms</h3>
+
+      <table class="line-items-table">
+        <tr>
+          <th class="">Start Date</th>
+                <td class="">{{orderStartDate}}</td><th class="">End Date</th>
+                <td class="">{{orderEndDate}}</td>
+        </tr><tr>
+          <th class="">Billing Cycle</th>
+                <td class="">{{billingCycle}}</td><th class="">Currency</th>
+                <td class="">{{currency}}</td>
+        </tr><tr>
+          <th class="">Payment Term</th>
+                <td class="">{{paymentTerm}}</td><th class="">Subscription Term</th>
+                <td class="">{{termLength}}</td>
+        </tr>
+      </table>
+
+  </div>
+
+    <br />
+
+    <div>
+    <h3 class="section-header">Contract Items</h3>
+    {{#formattedDateToLineItems}} {{#formattedDateToLineItems.entrySet}}
+    <h4 class="line-items-table-caption-date-interval">{{key.formattedStartDate}} - {{key.formattedEndDate}}</h4>
+    <table class="alpha-table">
+      <thead>
+        <tr class="alpha-tr">
+          <td class="alpha-td alpha-table-head" colspan="1" rowspan="1">
+                                <p><span class="alpha-table-text alpha-table-head-text">Plan Name</span></p>
+                              </td>
+<td class="alpha-td alpha-table-head" colspan="1" rowspan="1">
+                                <p><span class="alpha-table-text alpha-table-head-text">Quantity</span></p>
+                              </td>
+<td class="alpha-td alpha-table-head" colspan="1" rowspan="1">
+                                <p><span class="alpha-table-text alpha-table-head-text">Unit Of Measure</span></p>
+                              </td>
+<td class="alpha-td alpha-table-head" colspan="1" rowspan="1">
+                                <p><span class="alpha-table-text alpha-table-head-text">List Amount</span></p>
+                              </td>
+<td class="alpha-td alpha-table-head" colspan="1" rowspan="1">
+                                <p><span class="alpha-table-text alpha-table-head-text">Discount Amount</span></p>
+                              </td>
+<td class="alpha-td alpha-table-head" colspan="1" rowspan="1">
+                                <p><span class="alpha-table-text alpha-table-head-text">Yearly Amount</span></p>
+                              </td>
+          <td class="alpha-td alpha-table-head" colspan="1" rowspan="1">
+            <p>
+              <span class="alpha-table-text alpha-table-head-text"> Total </span>
+            </p>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="alpha-tr">
+          {{#value}}
+          <td class="alpha-td" colspan="1" rowspan="1">
+          <p><span class="alpha-table-text alpha-table-body-text">{{planDisplayName}}</span></p>
+        </td>
+<td class="alpha-td" colspan="1" rowspan="1">
+          <p><span class="alpha-table-text alpha-table-body-text">{{quantity}}</span></p>
+        </td>
+<td class="alpha-td" colspan="1" rowspan="1">
+          <p><span class="alpha-table-text alpha-table-body-text">{{unitOfMeasure}}</span></p>
+        </td>
+<td class="alpha-td" colspan="1" rowspan="1">
+          <p><span class="alpha-table-text alpha-table-body-text">{{listAmount}}</span></p>
+        </td>
+<td class="alpha-td" colspan="1" rowspan="1">
+          <p><span class="alpha-table-text alpha-table-body-text">{{#discountAmount}} {{discountAmount}} {{/discountAmount}}</span></p>
+        </td>
+<td class="alpha-td" colspan="1" rowspan="1">
+          <p><span class="alpha-table-text alpha-table-body-text">{{yearlyAmount}}</span></p>
+        </td>
+          <td class="alpha-td" colspan="1" rowspan="1">
+            <p>
+              <span class="alpha-table-text table-number"> {{amount}} </span>
+            </p>
+          </td>
+        </tr>
+         {{/value}}
+        <tr>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+    {{/formattedDateToLineItems.entrySet}}
+    <div class="total">
+      <label class="total-label">Grand Total</label>
+      <span class="table-number">{{total}}</span>
+    </div>
+    {{#invoicePreviews}}
+        <div class="total">
+          <label class="total-label">
+            {{#isYearlyBilling}} Year {{ periodIndex }} {{/isYearlyBilling}}
+            {{^isYearlyBilling}} {{ start }}-{{ end }} {{/isYearlyBilling}}
+          </label>
+          <span class="table-number">{{ amount }}</span>
+        </div>
+        {{/invoicePreviews}}
+    {{/formattedDateToLineItems}}
+    </div>
+
+    <div>
+    {{#formattedCustomContent}} {{#customContentTitle}}
+    <div>
+      <h3 class="section-header">{{ customContentTitle }}</h3>
+    </div>
+    {{/customContentTitle}}
+    <div>{{{ formattedCustomContent }}}</div>
+    {{/formattedCustomContent}}
+  </div>
+
+
+    {{#formattedDocumentTemplatesWithoutSection}} {{{formattedDocumentTemplatesWithoutSection}}}
+    {{/formattedDocumentTemplatesWithoutSection}}
+
+    {{#paymentLink}}
+    <br />
+    <div>
+      <h3 class="section-header">Automatic Payments</h3>
+      <p>
+        To make automatic payments, add a payment instrument as your primary payment method.<br />
+        <a href="{{paymentLink}}">Submit Payment Details</a>
+      </p>
+    </div>
+    {{/paymentLink}}
+
+    {{#formattedBeforeSignatureSection}} {{{formattedBeforeSignatureSection}}} {{/formattedBeforeSignatureSection}}
+
+    <div class="signature-section">
+      <table width="100%">
+        <tr>
+          <th colspan="2" class="section-header">{{ account.name }}</th>
+          <th width="10%" class="section-header"></th>
+          <th colspan="2" class="section-header">{{ tenantName }}</th>
+        </tr>
+
+        <tr>
+          <td>&nbsp</td>
+        </tr>
+
+        <tr>
+          <th>
+            <div>Signature:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block provider-gap-block--signature">
+              <div class="signature-anchor-text">
+                <div>_{{{customerEsignDocumentTags.signature}}}_</div>
+              </div>
+            </div>
+          </th>
+          <th width="10%"></th>
+          <th>
+            <div>Signature:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block provider-gap-block--signature">
+              <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.signature}}}_</div>
+            </div>
+          </th>
+        </tr>
+
+        <tr>
+          <th>
+            <div>Name:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block">
+              <div class="signature-anchor-text">_{{{customerEsignDocumentTags.name}}}_</div>
+            </div>
+          </th>
+          <th width="10%"></th>
+          <th>
+            <div>Name:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block">
+              <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.name}}}_</div>
+            </div>
+          </th>
+        </tr>
+
+        <tr>
+          <th>
+            <div>Date:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block">
+              <div class="signature-anchor-text">_{{{customerEsignDocumentTags.date}}}_</div>
+            </div>
+          </th>
+          <th width="10%"></th>
+          <th>
+            <div>Date:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block">
+              <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.date}}}_</div>
+            </div>
+          </th>
+        </tr>
+
+        <tr>
+          <th>
+            <div>Title:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block">
+              <div class="signature-anchor-text">_{{{customerEsignDocumentTags.title}}}_</div>
+            </div>
+          </th>
+          <th width="10%"></th>
+          <th>
+            <div>Title:</div>
+          </th>
+          <th>
+            <div class="provider-gap-block">
+              <div class="signature-anchor-text">_{{{signatoryEsignDocumentTags.title}}}_</div>
+            </div>
+          </th>
+        </tr>
+      </table>
+    </div>
+
+    {{#formattedAfterSignatureSection}}
+    <br />
+    {{{formattedAfterSignatureSection}}} {{/formattedAfterSignatureSection}}
